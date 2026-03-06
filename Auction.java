@@ -11,6 +11,7 @@ public class Auction
 {
     // The list of Lots in this auction.
     private ArrayList<Lot> listOfLots;
+    private ArrayList<Bid> ListOfBids;
     // The number that will be given to the next lot entered into this auction.
     private int nextLotNumber;
 
@@ -55,8 +56,8 @@ public class Auction
     {
         Lot selectedLot = getLot(lotNumber);
         if(selectedLot != null) {
-            Bid aBid = new Bid(bidder, value);
-            boolean successful = selectedLot.bidFor(aBid);
+            ListOfBids.add(new Bid(bidder, value));
+            boolean successful = selectedLot.bidFor(new Bid(bidder, value));
             if(successful) {
                 System.out.println("The bid for lot number " +
                                    lotNumber + " was successful.");
@@ -100,5 +101,28 @@ public class Auction
             return null;
         }
     }
+    public void close(){
+        for(Lot lot: listOfLots){
+            Bid bid = lot.getHighestBid();
+            if (bid != null){
+                System.out.println(bid.getBidder() + " "+ bid.getValue());
+            }
+            else{
+                System.out.println("no bidder");
+            }
+        }
+    }
+    public ArrayList<Lot>getUnsold(){
+        ArrayList<Lot> unsoldLots = new ArrayList<>();
+        for(Lot lot: listOfLots){
+            Bid bid = lot.getHighestBid();
+            
+            if(bid == null){
+                unsoldLots.add(lot);
+            }
+        }
+    return unsoldLots;
+    }
 }
+
 
